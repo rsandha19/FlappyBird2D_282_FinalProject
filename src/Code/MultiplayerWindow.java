@@ -16,8 +16,9 @@ import helper.GameManager;
 public class MultiplayerWindow extends JPanel implements KeyListener{
 	private Window player1;
 	private Window player2;
-	javax.swing.Timer deathChecker;
+	private javax.swing.Timer deathChecker;
 	public MultiplayerWindow() {
+		
 		setPreferredSize(new Dimension(900,700));
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
@@ -41,8 +42,8 @@ public class MultiplayerWindow extends JPanel implements KeyListener{
 		deathChecker = new javax.swing.Timer(1000, e -> {
 		    if (player1.isDead && player2.isDead) {
 		    	int winner;
-		    	if (player1.score > player2.score) winner = 1;
-		    	else if (player2.score > player1.score) winner = 2;
+		    	if (player1.getScore() > player2.getScore()) winner = 1;
+		    	else if (player2.getScore() > player1.getScore()) winner = 2;
 		    	else winner = -1;
 		    	GameManager.switchTo(new GameEnd(1, winner));
 

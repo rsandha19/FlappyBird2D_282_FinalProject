@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Equipped {
-	int[] list=new int[4];
+	private int[] list=new int[4];
 	public Equipped(){
 		 try {
 	    	 String link = new String("resources/data/equipped.txt");

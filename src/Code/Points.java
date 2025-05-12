@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Points{
-	int points;
+	private int points;
      Points(){
     	 try {
     	 String link = new String("resources/data/points.txt");

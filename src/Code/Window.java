@@ -159,6 +159,9 @@ package Code;
 			pipeTimer.start();
 			
 		}
+	      public int getScore() {
+	    	  return score;
+	      }
 	      public void placePipes() {
 
 	    	  /* use random to generate the random location of the gap in the pipes. 

@@ -6,12 +6,12 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Skins {
-	int costBird1=500;
-	int costBird2=2000;
-	int costBird3=10000;
-	int balance;
-	int[] list=new int[3];
-	Points points=new Points();
+	private int costBird1=500;
+	private int costBird2=2000;
+	private int costBird3=10000;
+	private int balance;
+	private int[] list=new int[3];
+	private Points points=new Points();
 	public Skins() {
 		balance=points.getPoints();
 		
@@ -30,10 +30,7 @@ public class Skins {
 	    	 sc.close();
 		 }catch(IOException e) {
 	    		 e.printStackTrace();
-	    		
 	    	 }
-		
-		
 	}
 	private void saveSkins() {
 		try {
@@ -70,8 +67,6 @@ public class Skins {
 			points.setPoints(balance);
 			saveSkins();
 			}
-		
-		
 	}
 	public void buyBird3() {
 		if(balance>=costBird3) {
@@ -80,7 +75,5 @@ public class Skins {
 			points.setPoints(balance);
 			saveSkins();
 			}
-		
-	}
-
+		}
 }

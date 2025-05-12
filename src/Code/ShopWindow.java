@@ -14,32 +14,32 @@ import javax.swing.JPanel;
 import helper.GameManager;
 
 public class ShopWindow extends JPanel{
-	int balance;
-	Image background;
-	Image shopLogo;
-	Image equipped;
-	Image bird1;
-	Image bird2;
-	Image bird3;
-	ImageIcon backButtonIcon;
-	ImageIcon buyLogo;
-	ImageIcon equipLogo;
+	private int balance;
+	private Image background;
+	private Image shopLogo;
+	private Image equipped;
+	private Image bird1;
+	private Image bird2;
+	private Image bird3;
+	private ImageIcon backButtonIcon;
+	private ImageIcon buyLogo;
+	private ImageIcon equipLogo;
 	
-	JButton btn1;
-	JButton btn2;
-	JButton btn3;
-	JButton brn4;
+	private JButton btn1;
+	private JButton btn2;
+	private JButton btn3;
+	private JButton brn4;
 	
-	boolean bird1Own;
-	boolean bird2Own;
-	boolean bird3Own;
-	int costBird1=500;
-	int costBird2=2000;
-	int costBird3=10000;
-	Skins skins=new Skins();
-	Points points = new Points();
-	Equipped eq = new Equipped();
-	int EquippedIndex;
+	private boolean bird1Own;
+	private boolean bird2Own;
+	private boolean bird3Own;
+	private int costBird1=500;
+	private int costBird2=2000;
+	private int costBird3=10000;
+	private Skins skins=new Skins();
+	private Points points = new Points();
+	private Equipped eq = new Equipped();
+	private int EquippedIndex;
 	public ShopWindow(){
 		
 		balance=points.getPoints();
