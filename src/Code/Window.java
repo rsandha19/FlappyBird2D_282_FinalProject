@@ -5,88 +5,94 @@ package Code;
 	import java.awt.*;
 	import java.util.*;
 	import java.io.*;
-
 	import javax.sound.sampled.AudioInputStream;
 	import javax.sound.sampled.AudioSystem;
 	import javax.sound.sampled.Clip;
 	import javax.swing.*;
-
 	import helper.GameManager;
+	
+	 // a pipe class- this will hold properties belonging to each of the pipes
+    class Pipe{
+    	// 460 is the decided positions for appearance of pipes
+    	boolean multi;
+    	int pipeX=460;
+    	int pipeTopY;
+    	int pipeBottomY;
+    	int pipeTopHeight;
+    	int pipeBottomHeight;
+    	int pipeWidth=60;
+    	Image topPipe;
+    	Image bottomPipe;
+    	boolean passed=false;
+    	// we only take images and the location of the gap in the pipes as an input.
+    	// then we use the num to calculate other attributes
+    	public Pipe( Image top,Image bottom,int num) {
+    		this.bottomPipe=bottom;
+    		this.topPipe=top;
+    		pipeTopY=0;
+    		pipeTopHeight=num-70;
+    		pipeBottomY=pipeTopHeight+140;
+    		pipeBottomHeight=700-pipeBottomY;
+    	}
+    }
 	public class Window extends JPanel implements ActionListener,KeyListener {
+		
+		
 		// creating variables 
 		// first for the game window
-		Image bird1;
-		Image bird2;
-		Image bird3;
-		Equipped eq=new Equipped();
+		// images
+		private Image backGround;
+		private Image bird;
+		private Image topPipe;
+		private Image bottomPipe;
+		private Image bird1;
+		private Image bird2;
+		private Image bird3;
+		
+		
 		public boolean isDead = false;
 		public boolean isMultiplayerPlayer1=false;
-		public void disableGame() {
-			gameLoop.stop();
-			pipeTimer.stop();
-		}
-		
-		int initialPoints;
 		boolean multiplayer=false;
-		int panelHeight=700;
-		int panelWidth=550;
-		int score=0;
-		Font scoreFont=new Font("Arial",Font.BOLD,36);
-		Color scoreColor=Color.white;
-		// variables for the bird
-		int birdWidth=55;
-		int birdHeight=55;
-		int birdX=panelWidth/5;
-		int birdY=panelHeight/3;
-		double birdHead;
-		double birdFoot;
-	// for movement
-		int verticalVel=-5;
-		int gravity=7;
-		int jump=-50;
-		int center=300;
-		int velocityX=-4;
 		
-		// images
-		 Image backGround;
-		    Image bird;
-		    Image topPipe;
-		    Image bottomPipe;
+		
+		private int initialPoints;
+		private int score=0;
+		private Font scoreFont=new Font("Arial",Font.BOLD,36);
+		private Color scoreColor=Color.white;
+		
+		
+		private int panelHeight=700;
+		private int panelWidth=550;
+		
+		
+		// variables for the bird
+		private int birdWidth=55;
+		private int birdHeight=55;
+		private int birdX=panelWidth/5;
+		private int birdY=panelHeight/3;
+		private double birdHead;
+		private double birdFoot;
+	// for movement
+		private int verticalVel=-5;
+		private int gravity=7;
+		private int jump=-50;
+		private int center=300;
+		private int velocityX=-4;
+		
+		
+		    
+	// loops
+		private javax.swing.Timer gameLoop;
+		private javax.swing.Timer pipeTimer;
+		    
+	    private Equipped eq=new Equipped();
+		private Sound sounds=new Sound();
+		private Points points=new Points();
 		    
 		    
-		    // loops
-		    javax.swing.Timer gameLoop;
-		    javax.swing.Timer pipeTimer;
-		    Sound sounds=new Sound();
-		    Points points=new Points();
-		    
-		    
-		    // a pipe class- this will hold properties belonging to each of the pipes
-		    class Pipe{
-		    	// 460 is the decided positions for appearance of pipes
-		    	boolean multi;
-		    	int pipeX=460;
-		    	int pipeTopY;
-		    	int pipeBottomY;
-		    	int pipeTopHeight;
-		    	int pipeBottomHeight;
-		    	int pipeWidth=60;
-		    	Image topPipe;
-		    	Image bottomPipe;
-		    	boolean passed=false;
-		    	// we only take images and the location of the gap in the pipes as an input.
-		    	// then we use the num to calculate other attributes
-		    	public Pipe( Image top,Image bottom,int num) {
-		    		this.bottomPipe=bottom;
-		    		this.topPipe=top;
-		    		pipeTopY=0;
-		    		pipeTopHeight=num-70;
-		    		pipeBottomY=pipeTopHeight+140;
-		    		pipeBottomHeight=700-pipeBottomY;
-		    	}
-		    }
-		    // to contain all our pipes
-		    ArrayList<Pipe> pipes = new ArrayList<Pipe>();
+		   
+	// to contain all our pipes
+        private ArrayList<Pipe> pipes = new ArrayList<Pipe>();
 		   
 		    
 		
@@ -96,17 +102,16 @@ package Code;
 		 * 
 		 */
 		    
-	      Window(int i) {
-	    	  String bird1Link=new String("resources/images/bird1.png");
-	  		bird1=new ImageIcon(bird1Link).getImage();
-	  		String bird2Link=new String("resources/images/bird2.png");
-	  		bird2=new ImageIcon(bird2Link).getImage();
-	  		String bird3Link=new String("resources/images/bird3.png");
-	  		bird3=new ImageIcon(bird3Link).getImage();
-	    	  if(i==1) {
-	    		  multiplayer=true;
-	    	  }
-	    	  initialPoints=points.getPoints();
+	      Window(int i) {if(i==1) {
+    		  multiplayer=true;
+    	  }
+	    	  // setting the points 
+	      
+    	  initialPoints=points.getPoints();
+	    	  
+    	 
+	  		//JFrame things
+	    	 
 			setPreferredSize(new Dimension(panelWidth,panelHeight));
 			setFocusable(true);
 			requestFocusInWindow();
@@ -118,10 +123,19 @@ package Code;
 			String topPipeLink=new String("resources/images/Top_pipe.png");
 			String bottomPipeLink = new String("resources/images/bottom_pipe.png");
 			
-			
+			 // loading images 
+	    	  
+	    	  String bird1Link=new String("resources/images/bird1.png");
+	  		bird1=new ImageIcon(bird1Link).getImage();
+	  		String bird2Link=new String("resources/images/bird2.png");
+	  		bird2=new ImageIcon(bird2Link).getImage();
+	  		String bird3Link=new String("resources/images/bird3.png");
+	  		bird3=new ImageIcon(bird3Link).getImage();
 			topPipe=new ImageIcon(topPipeLink).getImage();
 			bottomPipe=new ImageIcon(bottomPipeLink).getImage();
 			backGround=new ImageIcon(backGroundLink).getImage();
+			
+			// loading equipped skin
 			
 			if(eq.getEquippedIndex()==0) {
 				bird = new ImageIcon(birdLink).getImage();
@@ -144,9 +158,6 @@ package Code;
 			pipeTimer.setInitialDelay(2000);
 			pipeTimer.start();
 			
-			
-			
-
 		}
 	      public void placePipes() {
 
@@ -171,19 +182,25 @@ package Code;
 	    	    pipes.add(pipe);
 	    	}
 	// this is the thing that draws visuals
-	      // each drawimage statement is used to drow an object
+	      // each draw image statement is used to drow an object
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			// background
 			g.drawImage(backGround,0,0, panelWidth, panelHeight,this);
+			//bird
 			g.drawImage(bird,birdX,birdY-birdHeight/2,birdWidth,birdHeight,this);
+			// pipes
 			for(int i=0;i<pipes.size();i++) { if(pipes.get(i).pipeX+pipes.get(i).pipeWidth>0){
 				g.drawImage(pipes.get(i).bottomPipe,pipes.get(i).pipeX,pipes.get(i).pipeBottomY,pipes.get(i).pipeWidth,pipes.get(i).pipeBottomHeight,this);
 				g.drawImage(pipes.get(i).topPipe,pipes.get(i).pipeX,pipes.get(i).pipeTopY,pipes.get(i).pipeWidth,pipes.get(i).pipeTopHeight,this);
-				g.setFont(scoreFont);
-				g.setColor(scoreColor);
 				
-				g.drawString("SCORE : "+score,20,50);
-				}}}
+				}}
+			// score
+			g.setFont(scoreFont);
+			g.setColor(scoreColor);
+			g.drawString("SCORE : "+score,20,50);
+			}
+		
 		// the action performed by the gameloop timer
 		public void actionPerformed(ActionEvent e) {
 			move();
@@ -191,12 +208,19 @@ package Code;
 			if(isDead) return;
 			
 		}
+		
 		public void restartGameLoop() {
 		    if (gameLoop != null) gameLoop.start();
 		    if (pipeTimer != null) pipeTimer.start();
 		}
+		public void disableGame() {
+			gameLoop.stop();
+			pipeTimer.stop();
+		}
+		
 
 		public void move() {
+			
 			// changing the required co-ordinates 
 			birdY=birdY+verticalVel;
 			birdY=birdY+gravity;
@@ -204,53 +228,45 @@ package Code;
 			birdY=Math.min(birdY,645);
 			birdHead=birdY-(birdHeight / 2);
 			birdFoot=birdY+(birdHeight / 2);
+			
+			
 			// changing location of each pipe and removing them from array when not needed
 			for(int i=pipes.size()-1;i>=0;i--) {
 				Pipe p =pipes.get(i);
 				p.pipeX+=velocityX;
-				
 				if (!p.passed && birdX > p.pipeX + p.pipeWidth) {
 				    p.passed = true;
 				    score++;
 				}
-
 				if(p.pipeX+p.pipeWidth<0) {
 					pipes.remove(i);
 				}
 				// checking for collision here with movement
 				int marginX = 6;
 				int marginY = 6;
-
 				boolean withinPipeX = (birdX + marginX) + (birdWidth - 2 * marginX) > p.pipeX
 				                    && (birdX + marginX) < (p.pipeX + p.pipeWidth);
-
-				boolean hitTopPipe = (birdHead + marginY) < p.pipeTopHeight;
+                boolean hitTopPipe = (birdHead + marginY) < p.pipeTopHeight;
 				boolean hitBottomPipe = (birdFoot - marginY) > p.pipeBottomY;
 
 				if (withinPipeX && (hitTopPipe || hitBottomPipe)) {
 				    gameOver();
 				    return;
 				}
-
 			}
 			}
 			
-			
-			
-			
-	public void gameOver() {
-		
+		public void gameOver() {
 		disableGame();
 		sounds.playCollision();
 		isDead=true;
-		
 		if(!multiplayer) {
 		GameManager.switchTo(new GameEnd(0,score));
 		initialPoints=initialPoints+score;
 		points.setPoints(initialPoints);
 		score=0;
 		GameManager.f.setSize(550,700);}
-	}
+	    }
 		public void jumpAction() {
 				birdY=birdY+jump;
 				sounds.playJumpSound();
@@ -258,8 +274,6 @@ package Code;
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_SPACE) {
 				jumpAction();
-				
-				
 			}
 		}
 		public void keyTyped(KeyEvent e) {};
